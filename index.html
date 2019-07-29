@@ -19,6 +19,7 @@
 </head>
 <body>
     <canvas id="mycanvas">请升级你的浏览器！</canvas>
+    <input id="xiaochu" type="button" value="消除判定" onclick="xiaochu()">
     <script src="js/underscore-min.js"></script>
     <script src="js/SimpleJS.js"></script>
     <script src="js/Game.js"></script>
@@ -26,6 +27,17 @@
     <script src="js/Maps.js"></script>
     <script>
         var game = new Game("mycanvas","R.json");
+        function xiaochu() {
+            game.map.eliminate();
+            game.callBack(29,function () {
+                game.map.dropDown();
+                game.callBack(20,function () {
+                    game.map.supply();
+                })
+            });
+
+
+        }
     </script>
 </body>
 </html>

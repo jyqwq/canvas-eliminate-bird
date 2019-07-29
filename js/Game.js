@@ -26,6 +26,7 @@
             self.Robj = null;
             //自己的图片资源对象，v是图片对象
             self.R = {};
+            self.callBacks = {};
             //帧编号
             self.f = 0;
             //游戏刷新频率
@@ -70,19 +71,61 @@
             var self = this;
             self.map = new Maps();
 
+            self.fsm = "B";
+
             setInterval(function () {
+                //清屏
                 self.ctx.clearRect(0,0,self.canvas.width,self.canvas.height);
+
                 //设置帧编号
                 self.f++;
 
                 //背景
                 self.ctx.drawImage(self.R['bg_night'],0,0,self.canvas.width,self.canvas.height);
+
+                //更新渲染
                 self.map.render();
+
+                //检查回调
+                if (self.callBacks.hasOwnProperty(self.f.toString())) {
+                    self.callBacks[self.f.toString()]();
+                    delete self.callBacks[self.f.toString()];
+                }
+
+                //有限状态机
+                switch (self.fsm) {
+                    case "A":
+                        self.fsm = "A";
+                        break;
+                    case "B":
+                        console.log(game.map.check());
+                        if (game.map.check().length!==0) {
+                            self.fsm = "C";
+                        }else {
+                            self.fsm = "A";
+                        }
+                        break;
+                    case "C":
+                        self.map.eliminate(function () {
+                            self.map.dropDown(function () {
+                                self.map.supply(function () {
+                                    self.fsm = "B"
+                                })
+                            })
+                        });
+                        self.fsm = "动画状态";
+                        break;
+                }
+
                 //输出帧编号
                 self.ctx.textAlign = 'left';
                 self.ctx.font = '10px consolas';
                 self.ctx.fillText('FNO '+self.f,20,20);
+                self.ctx.fillText('FSM '+self.fsm,20,40);
             },self.fps);
+        },
+        callBack :function (timeLater,fn) {
+            this.callBacks[this.f+timeLater] = fn;
         }
     })
 })();

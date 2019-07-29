@@ -28,6 +28,7 @@
             self.hide = false;
         },
         update :function () {
+            if (this.hide) return;
             //小鸟移动
             if (this.isMove) {
                 this.x += this.dx;
@@ -49,6 +50,9 @@
             }else {
                 game.ctx.drawImage(game.R[self.imageName],self.x,self.y,self.spriteW,self.spriteW);
             }
+        },
+        bomb:function (){
+            this.isBoom=true;
         },
         moveTo :function (targetRow,targetCol,duringFrames) {
             this.isMove = true;
