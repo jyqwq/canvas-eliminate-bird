@@ -1,19 +1,15 @@
 (function () {
     var Maps = window.Maps = Class.extend({
         init :function () {
-            this.code = [
-                [_.random(0,5),_.random(0,5),_.random(0,5),_.random(0,5),_.random(0,5),_.random(0,5),_.random(0,5)],
-                [_.random(0,5),_.random(0,5),_.random(0,5),_.random(0,5),_.random(0,5),_.random(0,5),_.random(0,5)],
-                [_.random(0,5),_.random(0,5),_.random(0,5),_.random(0,5),_.random(0,5),_.random(0,5),_.random(0,5)],
-                [_.random(0,5),_.random(0,5),_.random(0,5),_.random(0,5),_.random(0,5),_.random(0,5),_.random(0,5)],
-                [_.random(0,5),_.random(0,5),_.random(0,5),_.random(0,5),_.random(0,5),_.random(0,5),_.random(0,5)],
-                [_.random(0,5),_.random(0,5),_.random(0,5),_.random(0,5),_.random(0,5),_.random(0,5),_.random(0,5)],
-                [_.random(0,5),_.random(0,5),_.random(0,5),_.random(0,5),_.random(0,5),_.random(0,5),_.random(0,5)],
-                []
-            ];
+            this.code = [[],[],[],[],[],[],[],[]];
+            for (let i = 0; i < 7; i++) {
+                for (let j = 0; j < 7; j++) {
+                    this.code[i][j] = _.random(0,game.typeNum-1);
+                }
+            }
             this.sprites = [[],[],[],[],[],[],[]];
             this.sArr = ["bird0","bird1","bird2","bird3","bird4","bird5","bird6","bird7","bird8","bird9","bird10","bird11","bird12"];
-            this.imgNameArr = _.sample(this.sArr,6);
+            this.imgNameArr = _.sample(this.sArr,game.typeNum);
             this.createSprite()
         },
         update :function () {
@@ -114,7 +110,7 @@
                 for (let row = 0;row<7;row++) {
                     if (this.code[row][col]===''){
                         supplyNumberArr[col]++;
-                        this.code[row][col] = _.random(0,5);
+                        this.code[row][col] = _.random(0,game.typeNum-1);
                     }
                 }
             }

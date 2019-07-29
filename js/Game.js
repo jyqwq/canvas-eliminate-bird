@@ -27,6 +27,8 @@
             //自己的图片资源对象，v是图片对象
             self.R = {};
             self.callBacks = {};
+            //种类个数
+            self.typeNum = 3;
             //帧编号
             self.f = 0;
             //游戏刷新频率
@@ -98,7 +100,6 @@
                         self.fsm = "A";
                         break;
                     case "B":
-                        console.log(game.map.check());
                         if (game.map.check().length!==0) {
                             self.fsm = "C";
                         }else {
