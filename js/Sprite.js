@@ -1,14 +1,10 @@
 (function () {
     //获取小鸟矩阵坐标值
     function getSpriteXY(row,col) {
-        var padding = 6;
-        var bottom = 100;
-        var spriteW = (game.canvas.width - padding * 2) / 7;
-        var top = game.canvas.height - bottom - spriteW * 7;
         return {
-            "x":padding+col*spriteW,
-            "y":top+row*spriteW,
-            "w":spriteW
+            "x":6+col*game.basex,
+            "y":game.basey+row*game.basex,
+            "w":game.basex
         }
     }
     //小鸟类

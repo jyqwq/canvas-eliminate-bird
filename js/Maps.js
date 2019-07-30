@@ -8,7 +8,7 @@
                 }
             }
             this.sprites = [[],[],[],[],[],[],[]];
-            this.sArr = ["bird0","bird1","bird2","bird3","bird4","bird5","bird6","bird7","bird8","bird9","bird10","bird11","bird12"];
+            this.sArr = ["bird0","bird1","bird2","bird3","bird4","bird5","bird6"];
             this.imgNameArr = _.sample(this.sArr,game.typeNum);
             this.createSprite()
         },
@@ -74,7 +74,19 @@
         },
         eliminate :function (cb) {
             var self = this;
+
+            if (game.f-game.lastEliminate<=150) {
+                game.combo++;
+                if (game.combo>4) game.combo=4;
+            }else {
+                game.combo = 1;
+            }
+
+            game.M['bgm'+game.combo].load();
+            game.M['bgm'+game.combo].play();
+            game.lastEliminate = game.f;
             _.each(this.check(),function (item) {
+                game.score++;
                 self.sprites[item.row][item.col].bomb(cb);
                 self.code[item.row][item.col] = '';
             });
@@ -122,6 +134,32 @@
                 }
             }
             game.callBack(20,cb)
+        },
+        exchange :function (sr,sc,tr,tc) {
+            let self = this;
+            this.sprites[sr][sc].moveTo(tr,tc,10);
+            this.sprites[tr][tc].moveTo(sr,sc,10);
+            game.fsm = "动画状态";
+            game.callBack(10,function () {
+                let temp = self.code[sr][sc];
+                self.code[sr][sc] = self.code[tr][tc];
+                self.code[tr][tc] = temp;
+                if (self.check().length === 0) {
+                    self.sprites[sr][sc].moveTo(sr,sc,10);
+                    self.sprites[tr][tc].moveTo(tr,tc,10);
+                    let temp = self.code[sr][sc];
+                    self.code[sr][sc] = self.code[tr][tc];
+                    self.code[tr][tc] = temp;
+                    game.callBack(10,function () {
+                        game.fsm = "A"
+                    })
+                }else {
+                    let temp = self.sprites[sr][sc];
+                    self.sprites[sr][sc] = self.sprites[tr][tc];
+                    self.sprites[tr][tc] = temp;
+                    game.fsm = "C"
+                }
+            })
         }
     })
 })();
