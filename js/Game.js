@@ -49,8 +49,7 @@
             self.loadResouce(function () {
                 //开始游戏
                 self.start();
-                //绑定监听
-                self.bindEvent();
+
             });
         },
         loadResouce : function (callback) {
@@ -90,11 +89,7 @@
         },
         start : function () {
             var self = this;
-            self.map = new Maps();
-            self.M['playbgm'].loop = 'loop';
-            self.M['playbgm'].play();
-            self.fsm = "B";
-
+            self.sceneManager = new SceneManager();
             setInterval(function () {
                 //清屏
                 self.ctx.clearRect(0,0,self.canvas.width,self.canvas.height);
@@ -104,50 +99,15 @@
 
                 //背景
                 self.ctx.drawImage(self.R['bg_night'],0,0,self.canvas.width,self.canvas.height);
-                self.ctx.drawImage(self.R['logo'],self.canvas.width/2-89,50);
-                //更新渲染
-                self.map.render();
 
-                //检查回调
-                if (self.callBacks.hasOwnProperty(self.f.toString())) {
-                    self.callBacks[self.f.toString()]();
-                    delete self.callBacks[self.f.toString()];
-                }
+                self.sceneManager.update();
+                self.sceneManager.render();
 
-                //有限状态机
-                switch (self.fsm) {
-                    case "A":
-                        self.fsm = "A";
-                        break;
-                    case "B":
-                        if (game.map.check().length!==0) {
-                            self.fsm = "C";
-                        }else {
-                            self.fsm = "A";
-                        }
-                        break;
-                    case "C":
-                        self.map.eliminate(function () {
-                            self.map.dropDown(function () {
-                                self.map.supply(function () {
-                                    self.fsm = "B"
-                                })
-                            })
-                        });
-                        self.fsm = "动画状态";
-                        break;
-                }
-
-                //打印分数
-                let sl = game.score.toString().length;
-                for (let j = 0; j < sl; j++) {
-                    game.ctx.drawImage(game.R['fenshu'+game.score.toString().charAt(j)],game.canvas.width/2-sl/2*34+34*j,120)
-                }
                 //输出帧编号
                 self.ctx.textAlign = 'left';
                 self.ctx.font = '10px consolas';
                 self.ctx.fillText('FNO '+self.f,20,20);
-                self.ctx.fillText('FSM '+self.fsm,20,40);
+                self.ctx.fillText('FSM '+self.sceneManager.fsm,20,40);
                 self.ctx.fillText('COMBO '+self.combo,20,60);
             },self.fps);
         },

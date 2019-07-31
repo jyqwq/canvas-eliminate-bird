@@ -139,7 +139,7 @@
             let self = this;
             this.sprites[sr][sc].moveTo(tr,tc,10);
             this.sprites[tr][tc].moveTo(sr,sc,10);
-            game.fsm = "动画状态";
+            game.sceneManager.fsm = "动画状态";
             game.callBack(10,function () {
                 let temp = self.code[sr][sc];
                 self.code[sr][sc] = self.code[tr][tc];
@@ -151,13 +151,14 @@
                     self.code[sr][sc] = self.code[tr][tc];
                     self.code[tr][tc] = temp;
                     game.callBack(10,function () {
-                        game.fsm = "A"
+                        game.sceneManager.fsm = "A"
                     })
                 }else {
+                    console.log('ccc');
                     let temp = self.sprites[sr][sc];
                     self.sprites[sr][sc] = self.sprites[tr][tc];
                     self.sprites[tr][tc] = temp;
-                    game.fsm = "C"
+                    game.sceneManager.fsm = "C"
                 }
             })
         }

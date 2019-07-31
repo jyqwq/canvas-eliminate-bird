@@ -50,7 +50,10 @@
     {"name": "b29","url": "asset/baozha/b29.png"},
     {"name": "logo","url": "asset/title.png"},
     {"name": "play","url": "asset/button_play.png"},
-    {"name": "over","url": "asset/text_game_over.png"}
+    {"name": "over","url": "asset/text_game_over.png"},
+    {"name": "new","url": "asset/button_ok.png"},
+    {"name": "menu","url": "asset/button_menu.png"},
+    {"name": "biglogo","url": "asset/big_logo.png"}
   ],
   "music": [
     {"name": "bgbgm","url": "asset/bgm/bgm02.mp3"},
