@@ -113,54 +113,6 @@
         },
         callBack :function (timeLater,fn) {
             this.callBacks[this.f+timeLater] = fn;
-        },
-        bindEvent :function () {
-            var self = this;
-            self.canvas.onmousedown = function (e) {
-                if (self.fsm !== "A") return;
-                let x =e.offsetX;
-                let y =e.offsetY;
-                let startCol = (x-6)/self.basex;
-                let startRow = (y-self.basey)/self.basex;
-                if (startCol<0) {
-                    startCol =-1;
-                }else {
-                    startCol = parseInt(startCol)
-                }
-                if (startRow<0) {
-                    startRow =-1;
-                }else {
-                    startRow = parseInt(startRow)
-                }
-                if (startCol<0 || startCol>6 || startRow<0 || startRow>6) return;
-                self.canvas.onmousemove = function (e) {
-                    let x =e.offsetX;
-                    let y =e.offsetY;
-                    let targetCol = (x-6)/self.basex;
-                    let targetRow = (y-self.basey)/self.basex;
-                    if (targetCol<0) {
-                        targetCol =-1;
-                    }else {
-                        targetCol = parseInt(targetCol)
-                    }
-                    if (targetRow<0) {
-                        targetRow =-1;
-                    }else {
-                        targetRow = parseInt(targetRow)
-                    }
-                    if (targetCol<0 || targetCol>6 || targetRow<0 || targetRow>6) {
-                        self.canvas.onmousemove = null;
-                        return;
-                    }
-                    if ((startRow ===targetRow && Math.abs(targetCol - startCol)===1) || (startCol ===targetCol && Math.abs(targetRow - startRow)===1)) {
-                        self.map.exchange(startRow,startCol,targetRow,targetCol);
-                        self.canvas.onmousemove = null;
-                    }
-                };
-                self.canvas.onmouseup = function () {
-                    self.canvas.onmousemove = null;
-                }
-            }
         }
     })
 })();
